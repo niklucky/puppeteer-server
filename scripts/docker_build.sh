@@ -1,8 +1,6 @@
 #!/bin/bash
 
-$VERSION=$1
+VERSION=$1
 
-echo $VERSION
-
-# docker image build --tag niklucky/puppeteer-server:${VERSION} . 
-# docker tag niklucky/puppeteer-server:${VERSION} niklucky/puppeteer-server:latest
+docker image build --tag syndicatedb/puppeteer-server:${VERSION} . 
+docker tag syndicatedb/puppeteer-server:${VERSION} syndicatedb/puppeteer-server:latest

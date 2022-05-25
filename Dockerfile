@@ -56,4 +56,3 @@ COPY --from=builder --chown="${APP_USER_NAME}:${APP_GROUP_NAME}" "${APP_PATH}/di
 
 CMD ["yarn","run","start"]
 
-EXPOSE ${PORT}

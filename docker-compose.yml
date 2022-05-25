@@ -1,0 +1,27 @@
+---
+version: "3.8"
+
+services:
+
+  service:
+    image: "syndicatedb/puppeteer-server:latest"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+      resources:
+        limits:
+          memory: 1g
+        reservations:
+          memory: 128m
+    environment:
+      - "PORT=3002"
+    tmpfs:
+      - /run
+      - /var/run
+      - /var/cache
+    ports:
+      - target: 3002
+        published: 3002
+        protocol: tcp
+
