@@ -20,6 +20,8 @@ services:
       - /run
       - /var/run
       - /var/cache
+    volumes:
+      - /tmp:/tmp
     ports:
       - target: 3002
         published: 3002

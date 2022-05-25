@@ -1,15 +1,19 @@
 import { randomUUID } from "crypto"
-import puppeteer, { HTTPResponse, LaunchOptions, PDFOptions, WaitForOptions } from "puppeteer"
+import puppeteer, { BrowserConnectOptions, BrowserLaunchArgumentOptions, HTTPResponse, LaunchOptions, PDFOptions, Product, WaitForOptions } from "puppeteer"
 import { APP_TMP_PATH, APP_URL } from "./constants"
 
 export type Mode = "html" | "pdf" | "screenshot" | "evaluate"
 
+type ILaunchOptions = LaunchOptions & BrowserLaunchArgumentOptions & BrowserConnectOptions & {
+  product?: Product;
+  extraPrefsFirefox?: Record<string, unknown>
+}
 export type Input = {
   mode?: Mode
   url?: string
   content?: string
   evaluate?: any
-  launchOptions?: LaunchOptions
+  launchOptions?: ILaunchOptions
   waitForOptions?: WaitForOptions
   PDFOptions?: PDFOptions
 }
@@ -22,8 +26,8 @@ export type Output = {
 
 export const launch = async (input: Input): Promise<Output> => {
   const output: Output = {}
-
-  const browser = await puppeteer.launch(input.launchOptions);
+  const launchOptions = prepareLaunchOptions(input.launchOptions)
+  const browser = await puppeteer.launch(launchOptions);
   const page = await browser.newPage();
   let response: HTTPResponse | null = null
 
@@ -54,6 +58,18 @@ export const launch = async (input: Input): Promise<Output> => {
 
   return output
 
+}
+
+function prepareLaunchOptions(options: ILaunchOptions): LaunchOptions {
+  if (!options) {
+    options = {
+      args: []
+    }
+  }
+  if (options.args) {
+    options.args = [...options.args, '--no-sandbox', '--disable-setuid-sandbox']
+  }
+  return options
 }
 
 function preparePDFOptions(options?: PDFOptions): PDFOptions {
