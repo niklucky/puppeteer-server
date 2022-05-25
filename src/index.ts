@@ -1,10 +1,12 @@
 import express from 'express';
-import { APP_PORT, APP_TMP_PATH } from './constants';
+import { APP_PORT, APP_TMP_PATH, APP_REQUEST_SIZE } from './constants';
 import { launch } from './launcher';
 
 const app = express();
-app.use(express.json());
+
+app.use(express.json({ limit: APP_REQUEST_SIZE }));
 app.use(express.static(APP_TMP_PATH))
+
 
 app.post('/', async (req, res) => {
   const response = await launch(req.body)
