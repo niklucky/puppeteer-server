@@ -27,8 +27,11 @@ export type Output = {
 export const launch = async (input: Input): Promise<Output> => {
   const output: Output = {}
   const launchOptions = prepareLaunchOptions(input.launchOptions)
+  console.log('[launch] Launching new instance: ', launchOptions);
   const browser = await puppeteer.launch(launchOptions);
+  console.log('[launch] Launched');
   const page = await browser.newPage();
+  console.log('[launch] browser.newPage');
   let response: HTTPResponse | null = null
 
   console.log('input', input);
@@ -46,6 +49,7 @@ export const launch = async (input: Input): Promise<Output> => {
 
   if (input.mode === 'pdf') {
     input.PDFOptions = preparePDFOptions(input.PDFOptions)
+    console.log('[launch] PDFOptions', input.PDFOptions);
     const pdf = await page.pdf(input.PDFOptions);
     if (input.PDFOptions.path) {
       output.pdf = getUrl(input.PDFOptions.path)
@@ -66,8 +70,10 @@ function prepareLaunchOptions(options: ILaunchOptions): LaunchOptions {
       args: []
     }
   }
+  options.headless = true
+  options.dumpio = true
   if (options.args) {
-    options.args = [...options.args, '--no-sandbox', '--disable-setuid-sandbox']
+    options.args = [...options.args, '--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
   }
   return options
 }
