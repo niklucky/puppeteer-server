@@ -1,5 +1,9 @@
 # Puppeteer HTTP-server
 
-## Version
+## Versions
 
 Docker image version is Puppeteer version.
+
+## Using with docker-compose
+
+In `docker-compose-yml` simple config.

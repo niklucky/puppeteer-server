@@ -11,7 +11,8 @@
     "dev": "yarn start:dev:watch",
     "start": "node dist/index.js",
     "build": "rimraf dist && tsc",
-    "build:docker": "./scripts/docker_build.sh",
+    "docker:build": "./scripts/docker_build.sh",
+    "docker:run": "./scripts/docker_build.sh",
     "start:dev:watch": "nodemon --watch 'src/**/*' -e ts --exec 'ts-node -r dotenv/config' ./src/index.ts",
     "start:dev": "ts-node -r dotenv/config ./src/index.ts",
     "test": "jest -i",
@@ -33,6 +34,7 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "puppeteer": "^14.1.1"
   }
 }
